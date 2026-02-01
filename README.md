@@ -43,12 +43,22 @@ The pipeline follows a modern stream processing architecture:
 realtime-vehicle-sensor-pipeline/
 │
 ├── src/
+│   ├── dag/
+│   │   └── spark_streaming_dag.py   # Airflow DAG for pipeline orchestration
+│   │
 │   ├── producers/
-│   │   └── sensor_generator.py      # Simulates car sensor data to Kafka
+│   │   └── data_generator.py        # Simulates real-time car sensor data to Kafka
+│   │
 │   ├── processing/
-│   │   ├── enrichment_job.py        # Main ETL logic (Stream-Static Join)
-│   │   └── anomaly_detector.py      # Filter logic for alerts
-
+│   │   ├── data_enrichment.py       # Main ETL: Joins stream with static data
+│   │   ├── alert_detection.py       # Logic for detecting anomalies (Speed/RPM)
+│   │   └── alert_counter.py         # Aggregates KPIs and statistics
+│   │
+│   └── setup/
+│       ├── car_models.py            # Generates static car model data
+│       ├── model_creation.py        # Creates dimension tables (S3/Local)
+│       └── cars_generator.py        # Initializes the vehicle fleet reference data
 │
-├── data/                            # Sample dimension data (Car Models/Colors)
-└── requirements.txt                 # Python dependencies
+├── data/                            # Sample data (JSON/CSV)
+├── requirements.txt                 # Project dependencies
+└── README.md                        # Project documentation
